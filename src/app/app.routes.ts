@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { NotFound } from './shared/components/not-found/not-found';
 import { authGuard } from './core/guards/auth-guard/auth-guard';
-import { TicTacToe } from './modules/game/tic-tac-toe/tic-tac-toe';
 
 export const routes: Routes = [
   {
@@ -11,7 +10,8 @@ export const routes: Routes = [
   {
     path: '',
     canActivate: [authGuard],
-    component: TicTacToe,
+    loadChildren: () => import('./modules/lobby/lobby.routes').then((m) => m.routes),
+    // component: TicTacToe,'./modules/lobby/lobby.routes.ts').then((m) => m.routes),
   },
   {
     path: '**',

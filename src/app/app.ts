@@ -1,24 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Injectable, OnInit, signal, viewChild } from '@angular/core';
-import { EventBus } from '../game/EventBus';
-import { MainMenu } from '../game/scenes/MainMenu';
+import { Component, inject, OnInit, viewChild } from '@angular/core';
 import { WebsocketService } from './core/services/websocket/websocket.service';
-import { WS_DESTINATIONS } from './shared/models/websocket-destinations.model';
 import { RouterModule } from '@angular/router';
 import { PhaserGame } from './phaser-game.component';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, PhaserGame],
   templateUrl: './app.html',
-  styleUrl: './app.scss',
+  styleUrl: './app.css',
 })
 export class App implements OnInit {
   // New way to get the component instance
   phaserRef = viewChild.required(PhaserGame);
   private readonly wsService: WebsocketService = inject(WebsocketService);
 
-  constructor() {}
+  constructor() {
+    /* empty */
+  }
 
   ngOnInit(): void {
     this.wsService.connect();

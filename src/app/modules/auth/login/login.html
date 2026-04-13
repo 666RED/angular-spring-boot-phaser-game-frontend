@@ -1,10 +1,14 @@
-<div class="flex place-content-center flex-col fixed top-0 bottom-0 right-0 left-0">
-  <mat-form-field appearance="outline">
-    <mat-label>Email</mat-label>
-    <input matInput placeholder="Enter email" />
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label>Password</mat-label>
-    <input matInput placeholder="Enter password" />
-  </mat-form-field>
+<div class="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+  <form class="flex min-w-1/2 flex-col" (submit)="handleLogin($event)">
+    <h1 class="text-center mb-8">Login</h1>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Enter email" [formField]="loginForm.email" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput placeholder="Enter password" [formField]="loginForm.password" />
+    </mat-form-field>
+    <button matButton="filled">Login</button>
+  </form>
 </div>

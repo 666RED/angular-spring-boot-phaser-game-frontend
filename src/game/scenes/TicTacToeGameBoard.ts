@@ -7,7 +7,7 @@ export class TicTacToeGameBoard extends Scene {
   background: GameObjects.Image;
   tiles: GameObjects.Rectangle[] = [];
   resetButton: GameObjects.Container;
-  isGameOver: boolean = false;
+  isGameOver = false;
   tileGraphics: Phaser.GameObjects.Graphics;
   ticTacToeService: TicTacToeService;
 
@@ -144,5 +144,7 @@ export class TicTacToeGameBoard extends Scene {
     this.resetButton.setVisible(false);
   }
 
-  preload() {}
+  preload() {
+    /* empty */
+  }
 }

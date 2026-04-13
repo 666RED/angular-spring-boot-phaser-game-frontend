@@ -1,1 +1,18 @@
-<p>register works!</p>
+<div class="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+  <form class="flex min-w-1/2 flex-col" (submit)="handleRegister($event)">
+    <h1 class="text-center mb-8">Register</h1>
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="At least 3 characters" [formField]="registerForm.name" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Enter email" [formField]="registerForm.email" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput placeholder="Enter password" [formField]="registerForm.password" />
+    </mat-form-field>
+    <button matButton="filled">Register</button>
+  </form>
+</div>

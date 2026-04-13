@@ -7,26 +7,26 @@ import {
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { catchError, firstValueFrom, of, tap } from 'rxjs';
 import { UserService } from './core/services/user/user-service';
 import { User } from './shared/models/user.model';
+import { credentialsInterceptor } from './core/interceptors/credentials-interceptor/credentials-interceptor';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withFetch(), withInterceptors([credentialsInterceptor])),
     provideAppInitializer(() => {
-      const http = inject(HttpClient);
       const userService = inject(UserService);
 
       return firstValueFrom(
-        http.get('http://localhost:8080/api/v1/users').pipe(
-          catchError((err) => {
-            console.log(err);
-            return of(null);
-          }),
+        userService.getUser().pipe(
+          catchError(() => of(null)),
           tap((user: User | null) => {
+            if (!user) return;
+
             userService.user.set(user);
           }),
         ),

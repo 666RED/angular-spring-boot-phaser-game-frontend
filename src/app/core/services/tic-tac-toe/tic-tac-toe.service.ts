@@ -51,7 +51,7 @@ export class TicTacToeService {
     this.currentPlayer.set('X');
   }
 
-  private checkWinner(row: number, column: number, gridSize: number = 3): boolean {
+  private checkWinner(row: number, column: number, gridSize = 3): boolean {
     // Check horizontal
     if (this.board()[row].every((cell) => cell === this.currentPlayer())) {
       return true;

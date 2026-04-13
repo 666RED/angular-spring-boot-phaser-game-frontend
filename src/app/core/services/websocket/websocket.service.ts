@@ -1,6 +1,6 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Task } from '../../../shared/models/task.model';
-import { Client, CompatClient, Stomp, StompSubscription } from '@stomp/stompjs';
+import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client/dist/sockjs';
 
 export type ListenerCallBack = (message: Task) => void;

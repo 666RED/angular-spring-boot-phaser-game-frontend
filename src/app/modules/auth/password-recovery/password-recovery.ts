@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-password-recovery',
   imports: [],
   templateUrl: './password-recovery.html',
-  styleUrl: './password-recovery.scss',
+  styleUrl: './password-recovery.css',
 })
-export class PasswordRecovery {
-
-}
+export class PasswordRecovery {}
