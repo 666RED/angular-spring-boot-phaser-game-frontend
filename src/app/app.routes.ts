@@ -11,7 +11,11 @@ export const routes: Routes = [
     path: '',
     canActivate: [authGuard],
     loadChildren: () => import('./modules/lobby/lobby.routes').then((m) => m.routes),
-    // component: TicTacToe,'./modules/lobby/lobby.routes.ts').then((m) => m.routes),
+  },
+  {
+    path: 'games',
+    canActivate: [authGuard],
+    loadChildren: () => import('./modules/game/game.routes').then((m) => m.routes),
   },
   {
     path: '**',

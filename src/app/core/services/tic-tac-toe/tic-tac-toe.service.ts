@@ -1,83 +1,39 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
-import { MakeMoveResponse, Winner } from '../../../shared/models/tic-tac-toe.model';
+import { inject, Injectable, signal } from '@angular/core';
+import { MakeMoveResponse, TicTacToeGameRoom } from '../../../shared/models/tic-tac-toe.model';
+import { ApiService } from '../api/api-service';
+import { TICTACTOE_SERVICE_ENDPOINTS } from './tic-tac-toe-service-endpoints';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TicTacToeService {
-  private readonly currentPlayer: WritableSignal<'X' | 'O'> = signal('X');
+  private readonly apiService = inject(ApiService);
 
-  private readonly board = signal([
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', ''],
-  ]);
+  readonly ticTacToeGameRoom = signal<TicTacToeGameRoom>(null);
+  readonly moveUpdate$ = new Subject<MakeMoveResponse>();
+  readonly newGame$ = new Subject<TicTacToeGameRoom>();
 
-  makeMove(row: number, column: number): MakeMoveResponse {
-    if (this.board()[row][column] === '') {
-      this.board()[row][column] = this.currentPlayer();
-      const winner = this.checkWinner(row, column);
-
-      // All tiles are filled
-      if (!winner && this.board().every((row) => row.every((r) => r !== ''))) {
-        return { success: true, winner: Winner.Draw, currentPlayer: this.currentPlayer() };
-      }
-
-      const result = {
-        success: true,
-        winner: winner
-          ? this.currentPlayer() === 'X'
-            ? Winner.PlayerOne
-            : Winner.PlayerTwo
-          : Winner.NoOne,
-        currentPlayer: this.currentPlayer(),
-      };
-
-      this.currentPlayer.update((prev) => (prev === 'X' ? 'O' : 'X'));
-
-      return result;
-    }
-
-    return { success: false, winner: Winner.NoOne, currentPlayer: this.currentPlayer() };
+  findOpponent() {
+    return this.apiService.post<string>(TICTACTOE_SERVICE_ENDPOINTS.FIND_OPPONENT, {});
   }
 
-  resetBoard(): void {
-    this.board.set([
-      ['', '', ''],
-      ['', '', ''],
-      ['', '', ''],
-    ]);
-
-    this.currentPlayer.set('X');
+  getGame(gameId: string) {
+    return this.apiService.get<TicTacToeGameRoom>(TICTACTOE_SERVICE_ENDPOINTS.GET_GAME(gameId));
   }
 
-  private checkWinner(row: number, column: number, gridSize = 3): boolean {
-    // Check horizontal
-    if (this.board()[row].every((cell) => cell === this.currentPlayer())) {
-      return true;
-    }
+  makeMove(row: number, column: number) {
+    return this.apiService.post<void>(TICTACTOE_SERVICE_ENDPOINTS.MAKE_MOVE, {
+      gameId: this.ticTacToeGameRoom().id,
+      row,
+      column,
+    });
+  }
 
-    // Check vertical
-    if (this.board().every((row) => row[column] === this.currentPlayer())) {
-      return true;
-    }
-
-    // Check main diagonal (top left -> right bottom)
-    if (row === column) {
-      if (this.board().every((_, i) => this.board()[i][i] === this.currentPlayer())) {
-        return true;
-      }
-    }
-
-    // Check Anti-diagonal (right top -> left bottom)
-    if (row + column === gridSize - 1) {
-      if (
-        this.board().every((_, i) => this.board()[i][gridSize - 1 - i] === this.currentPlayer())
-      ) {
-        return true;
-      }
-    }
-
-    return null;
+  newGame() {
+    return this.apiService.post(
+      TICTACTOE_SERVICE_ENDPOINTS.NEW_GAME(this.ticTacToeGameRoom().id),
+      {},
+    );
   }
 }

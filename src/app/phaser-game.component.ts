@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import StartGame from '../game/main';
 import { EventBus } from '../game/EventBus';
 import { TicTacToeService } from './core/services/tic-tac-toe/tic-tac-toe.service';
+import { UserService } from './core/services/user/user-service';
 
 @Component({
   selector: 'app-phaser-game',
@@ -15,9 +16,10 @@ export class PhaserGame implements OnInit, OnDestroy {
   sceneCallback: (scene: Phaser.Scene) => void;
 
   private readonly ticTacToeService = inject(TicTacToeService);
+  private readonly userService = inject(UserService);
 
   ngOnInit() {
-    this.game = StartGame('game-container', this.ticTacToeService);
+    this.game = StartGame('game-container', this.ticTacToeService, this.userService);
 
     EventBus.on('current-scene-ready', (scene: Phaser.Scene) => {
       this.scene = scene;

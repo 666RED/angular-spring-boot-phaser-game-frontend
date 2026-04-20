@@ -1,2 +1,12 @@
 <app-header></app-header>
-<app-phaser-game></app-phaser-game>
+<div class="flex gap-x-4">
+  <app-phaser-game></app-phaser-game>
+  <div class="flex-1">
+    <h2>Round: {{ game().round }}</h2>
+    <div class="flex w-full items-center justify-between">
+      <h2>Win: {{ winRound() }}</h2>
+      <h2>Lose: {{ loseRound() }}</h2>
+      <h2>Draw: {{ drawRound() }}</h2>
+    </div>
+  </div>
+</div>

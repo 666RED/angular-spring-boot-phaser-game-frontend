@@ -7,6 +7,7 @@ import { Preloader } from './scenes/Preloader';
 import { TicTacToeGameBoard } from './scenes/TicTacToeGameBoard';
 import { SceneKeys } from './game-scenes';
 import { TicTacToeService } from '../app/core/services/tic-tac-toe/tic-tac-toe.service';
+import { UserService } from '../app/core/services/user/user-service';
 
 // Find out more information about the Game Config at:
 // https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -14,18 +15,21 @@ const config: Phaser.Types.Core.GameConfig = {
   type: AUTO,
   width: 600,
   height: 600,
-  // parent: 'game-container',
   backgroundColor: '#028af8',
   scene: [Boot, Preloader, MainMenu, MainGame, GameOver, TicTacToeGameBoard],
 };
 
-const StartGame = (parent: string, service: TicTacToeService) => {
+const StartGame = (
+  parent: string,
+  ticTacToeService: TicTacToeService,
+  userService: UserService,
+) => {
   return new Game({
     ...config,
     parent,
     callbacks: {
       postBoot: (game) => {
-        game.scene.start(SceneKeys.TicTacToeGameBoard, { service });
+        game.scene.start(SceneKeys.TicTacToeGameBoard, { ticTacToeService, userService });
       },
     },
   });

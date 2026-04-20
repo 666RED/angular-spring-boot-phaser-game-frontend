@@ -1,12 +1,28 @@
-export enum Winner {
-  PlayerOne = 'Player One',
-  PlayerTwo = 'Player Two',
-  Draw = 'Draw',
-  NoOne = 'No one',
+export interface TicTacToeGameRoom {
+  id: string;
+  round: number;
+  winRounds: Record<number, number>;
+  gameState: TicTacToeGameState;
+  playerIds: number[];
 }
 
+export interface TicTacToeGameState {
+  currentBoard: string[];
+  turnCount: number;
+  status: TicTacToeGameStatus;
+  firstTurnPlayerId: number;
+  currentTurnPlayerId: number;
+  winnerId: number;
+  lastMoveTimestamp: number;
+}
+
+export type TicTacToeGameStatus = 'WAITING' | 'PLAYING' | 'FINISHED';
+
 export interface MakeMoveResponse {
-  success: boolean;
-  winner: Winner;
-  currentPlayer: 'X' | 'O';
+  status: TicTacToeGameStatus;
+  currentBoard: string[];
+  currentTurnPlayerId: number;
+  turnCount: number;
+  winnerId: number | null;
+  winRounds: Record<number, number>;
 }

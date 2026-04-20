@@ -1,1 +1,7 @@
-<div></div>
+<app-header></app-header>
+<div class="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+  <button matButton="filled" (click)="handleFindOpponent($event)">Find opponent</button>
+</div>
+@for (num of [1, 2, 3]; track $index) {
+  <div>{{ num }}</div>
+}
